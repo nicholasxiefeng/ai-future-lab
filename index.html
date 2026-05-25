@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>AI未来实验室</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+
+  background:#050816;
+  overflow:hidden;
+  font-family:Arial;
+
+  color:white;
+
+}
+
+/* 动态背景 */
+
+.bg{
+
+  position:fixed;
+  width:100%;
+  height:100vh;
+
+  overflow:hidden;
+
+}
+
+.circle{
+
+  position:absolute;
+  border-radius:50%;
+
+  background:rgba(0,255,255,0.15);
+
+  animation:move 15s linear infinite;
+
+  filter:blur(10px);
+
+}
+
+.circle:nth-child(1){
+  width:300px;
+  height:300px;
+  left:10%;
+  top:20%;
+}
+
+.circle:nth-child(2){
+  width:200px;
+  height:200px;
+  right:10%;
+  top:50%;
+  animation-duration:20s;
+}
+
+.circle:nth-child(3){
+  width:150px;
+  height:150px;
+  left:40%;
+  bottom:10%;
+  animation-duration:25s;
+}
+
+@keyframes move{
+
+  0%{
+    transform:translateY(0px) rotate(0deg);
+  }
+
+  50%{
+    transform:translateY(-50px) rotate(180deg);
+  }
+
+  100%{
+    transform:translateY(0px) rotate(360deg);
+  }
+
+}
+
+/* 主界面 */
+
+.container{
+
+  position:relative;
+  z-index:10;
+
+  width:100%;
+  min-height:100vh;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+  align-items:center;
+
+  padding:20px;
+
+}
+
+h1{
+
+  font-size:70px;
+
+  margin-bottom:20px;
+
+  background:linear-gradient(90deg,#00ffff,#8b5cf6);
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  text-shadow:0 0 30px rgba(0,255,255,0.5);
+
+}
+
+.subtitle{
+
+  color:#94a3b8;
+
+  margin-bottom:40px;
+
+  letter-spacing:3px;
+
+}
+
+.chat-box{
+
+  width:90%;
+  max-width:900px;
+
+  background:rgba(255,255,255,0.05);
+
+  border:1px solid rgba(255,255,255,0.1);
+
+  backdrop-filter:blur(20px);
+
+  border-radius:30px;
+
+  padding:30px;
+
+  box-shadow:0 0 40px rgba(0,255,255,0.1);
+
+}
+
+textarea{
+
+  width:100%;
+  height:160px;
+
+  background:#0f172a;
+
+  border:none;
+
+  border-radius:20px;
+
+  padding:20px;
+
+  color:white;
+
+  font-size:18px;
+
+  resize:none;
+
+  outline:none;
+
+}
+
+button{
+
+  margin-top:20px;
+
+  width:100%;
+
+  padding:18px;
+
+  border:none;
+
+  border-radius:20px;
+
+  font-size:20px;
+
+  cursor:pointer;
+
+  background:linear-gradient(90deg,#06b6d4,#8b5cf6);
+
+  color:white;
+
+  transition:0.3s;
+
+}
+
+button:hover{
+
+  transform:scale(1.02);
+
+  box-shadow:0 0 30px rgba(0,255,255,0.4);
+
+}
+
+#result{
+
+  margin-top:25px;
+
+  min-height:120px;
+
+  background:#0f172a;
+
+  border-radius:20px;
+
+  padding:20px;
+
+  color:#cbd5e1;
+
+  line-height:1.8;
+
+  font-size:18px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="bg">
+
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+
+</div>
+
+<div class="container">
+
+  <h1>AI未来实验室</h1>
+
+  <div class="subtitle">
+    FUTURE · INTELLIGENCE · EVOLUTION
+  </div>
+
+  <div class="chat-box">
+
+    <textarea
+      id="question"
+      placeholder="输入你的问题..."
+    ></textarea>
+
+    <button onclick="fakeAI()">
+      进入未来
+    </button>
+
+    <div id="result">
+      AI 正在等待你的指令...
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+async function fakeAI(){
+
+  const q = document.getElementById("question").value;
+
+  const result = document.getElementById("result");
+
+  result.innerHTML = "AI 思考中...";
+
+  setTimeout(()=>{
+
+    result.innerHTML =
+    "未来AI响应：" + q;
+
+  },1000);
+
+}
+
+</script>
+
+</body>
+</html>
