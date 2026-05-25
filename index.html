@@ -276,6 +276,40 @@ async function fakeAI(){
 
   const result = document.getElementById("result");
 
+  result.innerHTML = "AI思考中...";
+
+  try{
+
+    const res = await fetch("/api/chat",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        question:q
+      })
+
+    });
+
+    const data = await res.json();
+
+    result.innerHTML = data.reply;
+
+  }catch(err){
+
+    result.innerHTML = "AI连接失败";
+
+  }
+
+}
+
+  const q = document.getElementById("question").value;
+
+  const result = document.getElementById("result");
+
   result.innerHTML = "AI 思考中...";
 
   setTimeout(()=>{
