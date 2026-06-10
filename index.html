@@ -269,42 +269,30 @@ button:hover{
 </div>
 
 <script>
-
-window.fakeAI = async function(){
-
+window.fakeAI = async function () {
   const q = document.getElementById("question").value;
-
   const result = document.getElementById("result");
 
   result.innerHTML = "AI思考中...";
 
-  try{
-
-    const res = await fetch("/api/chat",{
-
-      method:"POST",
-
-      headers:{
-        "Content-Type":"application/json"
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
       },
-
-      body:JSON.stringify({
-        question:q
+      body: JSON.stringify({
+        question: q
       })
-
     });
 
     const data = await res.json();
-
     result.innerHTML = data.reply;
 
-  }catch(err){
-
-  res.status(500).json({
-    reply:"AI连接失败：" + err.message
-  });
-
-}
+  } catch (err) {
+    result.innerHTML = "AI连接失败：" + err.message;
+  }
+};
 </script>
 
 </body>
