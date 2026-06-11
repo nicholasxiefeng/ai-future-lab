@@ -268,7 +268,116 @@ button:hover{
   font-size:18px;
 
 }
+.app{
+  width:100%;
+  height:100vh;
+  display:flex;
+  background:#050816;
+  color:white;
+}
 
+.sidebar{
+  width:220px;
+  height:100vh;
+  border-right:1px solid rgba(255,255,255,0.08);
+  padding:24px 16px;
+  background:rgba(255,255,255,0.03);
+}
+
+.model{
+  padding:14px 16px;
+  margin-bottom:10px;
+  border-radius:14px;
+  color:#94a3b8;
+  cursor:pointer;
+  font-size:15px;
+  transition:0.25s;
+}
+
+.model:hover{
+  background:rgba(255,255,255,0.08);
+  color:white;
+}
+
+.model.active{
+  background:linear-gradient(90deg,#06b6d4,#8b5cf6);
+  color:white;
+}
+
+.model.disabled{
+  opacity:0.35;
+  cursor:not-allowed;
+}
+
+.main{
+  flex:1;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+.chat-history{
+  flex:1;
+  padding:60px 80px 160px;
+  overflow-y:auto;
+  background:transparent;
+}
+
+.user-msg{
+  max-width:720px;
+  margin:0 0 24px auto;
+  padding:16px 20px;
+  border-radius:18px 18px 4px 18px;
+  background:linear-gradient(90deg,#06b6d4,#8b5cf6);
+  color:white;
+  line-height:1.8;
+}
+
+.ai-msg{
+  max-width:760px;
+  margin:0 auto 28px 0;
+  padding:18px 22px;
+  border-radius:18px 18px 18px 4px;
+  background:rgba(255,255,255,0.06);
+  color:#dbeafe;
+  line-height:1.9;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.input-area{
+  position:absolute;
+  left:80px;
+  right:80px;
+  bottom:28px;
+}
+
+.input-area textarea{
+  width:100%;
+  min-height:68px;
+  max-height:160px;
+  resize:none;
+  border:none;
+  outline:none;
+  padding:20px 22px;
+  border-radius:22px;
+  background:rgba(255,255,255,0.08);
+  color:white;
+  font-size:17px;
+  line-height:1.6;
+  box-shadow:0 0 40px rgba(0,255,255,0.08);
+}
+
+.input-area textarea::placeholder{
+  color:#64748b;
+}
+
+.hint{
+  margin-top:10px;
+  font-size:13px;
+  color:#64748b;
+  text-align:center;
+}
 </style>
 
 </head>
@@ -283,48 +392,67 @@ button:hover{
 
 </div>
 
-<div class="container">
+<div class="app">
 
-  <h1>AI未来实验室</h1>
+  <aside class="sidebar">
+    <div class="model active" data-model="deepseek-chat">DeepSeek Chat</div>
+    <div class="model" data-model="deepseek-reasoner">DeepSeek R1</div>
+    <div class="model disabled">GPT-4o</div>
+    <div class="model disabled">Claude</div>
+    <div class="model disabled">Gemini</div>
+  </aside>
 
-  <div class="subtitle">
-    FUTURE · INTELLIGENCE · EVOLUTION
-  </div>
+  <main class="main">
+    <div id="chatHistory" class="chat-history"></div>
 
-  <div class="chat-box">
-
-    <textarea
-      id="question"
-      placeholder="输入你的问题..."
-    ></textarea>
-
-<select id="model" class="model-select">
-  <option value="deepseek-chat">DeepSeek Chat</option>
-  <option value="deepseek-reasoner">DeepSeek R1 推理</option>
-</select>
-
-<button type="button" onclick="window.fakeAI()">
-  进入未来
-</button>
-
-    <div id="chatHistory" class="chat-history">
-  <div class="ai-msg">AI 正在等待你的指令...</div>
-</div>
-
-  </div>
+    <div class="input-area">
+      <textarea
+        id="question"
+        placeholder="给 AI 发送消息..."
+      ></textarea>
+      <div class="hint">Enter 发送 · Shift + Enter 换行</div>
+    </div>
+  </main>
 
 </div>
 
 <script>
+let currentModel = "deepseek-chat";
+
+document.querySelectorAll(".model").forEach(item => {
+  if (item.classList.contains("disabled")) return;
+
+  item.addEventListener("click", () => {
+    document.querySelectorAll(".model").forEach(m => m.classList.remove("active"));
+    item.classList.add("active");
+    currentModel = item.dataset.model;
+  });
+});
+
+const input = document.getElementById("question");
+
+input.addEventListener("keydown", function(e){
+  if(e.key === "Enter" && !e.shiftKey){
+    e.preventDefault();
+    window.fakeAI();
+  }
+});
+
 window.fakeAI = async function () {
-  const q = document.getElementById("question").value;
-      const model = document.getElementById("model").value;
+  const q = input.value.trim();
   const chatHistory = document.getElementById("chatHistory");
 
-chatHistory.innerHTML += `
-<div class="user-msg">👤 ${q}</div>
-<div class="ai-msg">🤖 AI思考中...</div>
-`;
+  if(!q) return;
+
+  chatHistory.innerHTML += `<div class="user-msg">${q}</div>`;
+  input.value = "";
+
+  const loading = document.createElement("div");
+  loading.className = "ai-msg";
+  loading.innerHTML = "思考中...";
+  chatHistory.appendChild(loading);
+  chatHistory.scrollTop = chatHistory.scrollHeight;
+
   try {
     const res = await fetch("/api/chat", {
       method: "POST",
@@ -332,20 +460,17 @@ chatHistory.innerHTML += `
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-  question: q,
-  model: model
-})
+        question: q,
+        model: currentModel
+      })
     });
 
     const data = await res.json();
-    chatHistory.innerHTML += `
-<div class="ai-msg">🤖 ${data.reply}</div>
-`;
+    loading.innerHTML = data.reply;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
 
   } catch (err) {
-    chatHistory.innerHTML += `
-<div class="ai-msg">❌ ${err.message}</div>
-`;
+    loading.innerHTML = "连接失败：" + err.message;
   }
 };
 </script>
