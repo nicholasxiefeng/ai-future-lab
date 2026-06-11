@@ -36,23 +36,7 @@ body{
 
 /* 主界面 */
 
-.container{
 
-  position:relative;
-  z-index:10;
-
-  width:100%;
-  min-height:100vh;
-
-  display:flex;
-  flex-direction:column;
-
-  justify-content:center;
-  align-items:center;
-
-  padding:20px;
-
-}
 
 h1{
 
@@ -296,52 +280,31 @@ button:hover{
 
   
 
-<div class="menu-title">模型</div>
+<aside class="sidebar">
 
-<div class="model active" data-model="deepseek-chat">
-DeepSeek Chat
-</div>
+  <div class="menu-title">模型</div>
 
-<div class="model" data-model="deepseek-reasoner">
-DeepSeek R1
-</div>
+  <div class="model active" data-model="deepseek-chat">
+    DeepSeek Chat
+  </div>
 
-<div class="model disabled">
-GPT-4o
-</div>
+  <div class="model" data-model="deepseek-reasoner">
+    DeepSeek R1
+  </div>
 
-<div class="model disabled">
-Claude
-</div>
+  <div class="model disabled">
+    GPT-4o
+  </div>
 
-<div class="model disabled">
-Gemini
-</div>
+  <div class="model disabled">
+    Claude
+  </div>
+
+  <div class="model disabled">
+    Gemini
+  </div>
 
 </aside>
-
-  <main class="main">
-    <div class="tool-bar">
-  <div class="tool active">聊天</div>
-  <div class="tool">画图</div>
-  <div class="tool">视频</div>
-  <div class="tool">TikTok选品</div>
-  <div class="tool">海报生成</div>
-</div>
-    <div id="chatHistory" class="chat-history"></div>
-
-    <div class="input-area">
-      <textarea
-        id="question"
-        placeholder="给 AI 发送消息..."
-      ></textarea>
-      <div class="hint">Enter 发送 · Shift + Enter 换行</div>
-    </div>
-  </main>
-
-</div>
-
-<script>
 let currentModel = "deepseek-chat";
 
 document.querySelectorAll(".model").forEach(item => {
