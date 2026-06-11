@@ -2,12 +2,10 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>AI未来实验室</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Tools</title>
 
 <style>
-
 *{
   margin:0;
   padding:0;
@@ -15,154 +13,55 @@
 }
 
 body{
-
+  font-family:Arial, sans-serif;
   background:#ffffff;
-  overflow:hidden;
-  font-family:Arial;
-
   color:#111827;
+  overflow:hidden;
 }
-
-/* 动态背景 */
-
-
-
-
-
-
-
-
-}
-
-/* 主界面 */
-
-
-
-h1{
-
-  font-size:70px;
-
-  margin-bottom:20px;
-
-  background:linear-gradient(90deg,#00ffff,#8b5cf6);
-
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-
-  text-shadow:0 0 30px rgba(0,255,255,0.5);
-
-}
-
-.subtitle{
-
-  color:#94a3b8;
-
-  margin-bottom:40px;
-
-  letter-spacing:3px;
-
-}
-
-
-
-
-.model-select{
-  width:100%;
-  margin-top:15px;
-  padding:14px 18px;
-  border:none;
-  border-radius:16px;
-  background:#0f172a;
-  color:#67e8f9;
-  font-size:16px;
-  outline:none;
-  box-shadow:0 0 20px rgba(0,255,255,0.15);
-}
-
-
-
-
-
-button{
-
-  margin-top:20px;
-
-  width:100%;
-
-  ...
-}
-button{
-
-  margin-top:20px;
-
-  width:100%;
-
-  padding:18px;
-
-  border:none;
-
-  border-radius:20px;
-
-  font-size:20px;
-
-  cursor:pointer;
-
-  background:linear-gradient(90deg,#06b6d4,#8b5cf6);
-
-  color:white;
-
-  transition:0.3s;
-
-}
-
-button:hover{
-
-  transform:scale(1.02);
-
-  box-shadow:0 0 30px rgba(0,255,255,0.4);
-
-}
-
 
 .app{
-  width:100%;
+  width:100vw;
   height:100vh;
   display:flex;
   background:#ffffff;
-  color:#111827;
 }
 
+/* 左侧模型栏 */
 .sidebar{
-  display: flex;
-  flex-direction: column; /* 垂直排列 */
-  justify-content: flex-start;
-  width: 220px;
-  height: 100vh;
-  border-right: 1px solid #eef0f3;
-  padding: 24px 16px;
-  background: #fafafa;
+  width:180px;
+  height:100vh;
+  border-right:1px solid #eeeeee;
+  background:#ffffff;
+  padding:24px 16px;
+}
+
+.menu-title{
+  font-size:13px;
+  color:#9ca3af;
+  margin-bottom:16px;
 }
 
 .model{
-  padding: 12px 14px;
-  margin-bottom: 10px; /* 垂直间距 */
-  border-radius: 12px;
-  color: #6b7280;
-  cursor: pointer;
-  font-size: 15px;
-  text-align: left; /* 左对齐文字 */
+  padding:12px 14px;
+  margin-bottom:8px;
+  border-radius:12px;
+  font-size:15px;
+  color:#6b7280;
+  cursor:pointer;
 }
 
 .model.active{
-  background: #111827;
-  color: white;
+  background:#f3f4f6;
+  color:#111827;
+  font-weight:600;
 }
 
 .model.disabled{
-  opacity: 0.35;
-  cursor: not-allowed;
+  opacity:0.35;
+  cursor:not-allowed;
 }
 
+/* 右侧主体 */
 .main{
   flex:1;
   height:100vh;
@@ -170,43 +69,71 @@ button:hover{
   background:#ffffff;
 }
 
+/* 顶部工具栏 */
+.tool-bar{
+  height:56px;
+  display:flex;
+  align-items:center;
+  gap:32px;
+  padding:0 48px;
+  border-bottom:1px solid #eeeeee;
+}
+
+.tool{
+  font-size:15px;
+  color:#6b7280;
+  cursor:pointer;
+  height:56px;
+  display:flex;
+  align-items:center;
+}
+
+.tool.active{
+  color:#111827;
+  border-bottom:2px solid #111827;
+}
+
+/* 聊天区域 */
 .chat-history{
-  max-width:760px;
-  margin:0 auto;
-  padding:30px 20px 170px;
+  max-width:720px;
   height:100vh;
+  margin:0 auto;
+  padding:90px 20px 160px;
   overflow-y:auto;
 }
 
 .user-msg{
   max-width:520px;
-  margin:0 0 26px auto;
+  margin:0 0 28px auto;
   padding:14px 18px;
   border-radius:18px;
   background:#f3f4f6;
   color:#111827;
   line-height:1.8;
+  font-size:16px;
 }
 
 .ai-msg{
   max-width:680px;
-  margin:0 0 32px 0;
+  margin:0 0 36px 0;
   padding:0;
-  background:transparent;
+  background:none;
   color:#111827;
   line-height:1.9;
   font-size:16px;
 }
 
+/* 输入框：第一次居中 */
 .input-area{
   position:absolute;
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
-  width:600px;
-  transition:0.3s;
+  width:560px;
+  transition:0.25s ease;
 }
 
+/* 发送后到底部 */
 .input-area.active{
   top:auto;
   bottom:28px;
@@ -216,17 +143,16 @@ button:hover{
 .input-area textarea{
   width:100%;
   min-height:58px;
-  max-height:130px;
+  max-height:140px;
   resize:none;
   border:1px solid #e5e7eb;
-  outline:none;
-  padding:18px 20px;
   border-radius:18px;
-  background:#ffffff;
-  color:#111827;
+  padding:18px 20px;
+  outline:none;
   font-size:16px;
   line-height:1.6;
-  box-shadow:none;
+  background:#ffffff;
+  color:#111827;
 }
 
 .input-area textarea::placeholder{
@@ -235,80 +161,53 @@ button:hover{
 
 .hint{
   margin-top:10px;
+  text-align:center;
   font-size:12px;
   color:#9ca3af;
-  text-align:center;
-}
-  margin-top:10px;
-  font-size:13px;
-  color:#64748b;
-  text-align:center;
-}
-  .tool-bar{
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  gap:28px;
-  padding:22px 40px 8px;
-  border-bottom:1px solid #eeeeee;
-}
-
-.tool{
-  padding-bottom:12px;
-  cursor:pointer;
-  color:#6b7280;
-  font-size:15px;
-  transition:0.2s;
-}
-
-.tool:hover{
-  color:#111827;
-}
-
-.tool.active{
-  color:#111827;
-  border-bottom:2px solid #111827;
 }
 </style>
-
 </head>
 
 <body>
 
-
 <div class="app">
 
-  
+  <aside class="sidebar">
+    <div class="menu-title">模型</div>
 
-<aside class="sidebar">
+    <div class="model active" data-model="deepseek-chat">DeepSeek Chat</div>
+    <div class="model" data-model="deepseek-reasoner">DeepSeek R1</div>
+    <div class="model disabled">GPT-4o</div>
+    <div class="model disabled">Claude</div>
+    <div class="model disabled">Gemini</div>
+  </aside>
 
-  <div class="menu-title">模型</div>
+  <main class="main">
 
-  <div class="model active" data-model="deepseek-chat">
-    DeepSeek Chat
-  </div>
+    <div class="tool-bar">
+      <div class="tool active">聊天</div>
+      <div class="tool">画图</div>
+      <div class="tool">视频</div>
+      <div class="tool">TikTok选品</div>
+      <div class="tool">海报生成</div>
+    </div>
 
-  <div class="model" data-model="deepseek-reasoner">
-    DeepSeek R1
-  </div>
+    <div id="chatHistory" class="chat-history"></div>
 
-  <div class="model disabled">
-    GPT-4o
-  </div>
+    <div class="input-area">
+      <textarea id="question" placeholder="给 AI 发送消息..."></textarea>
+      <div class="hint">Enter 发送 · Shift + Enter 换行</div>
+    </div>
 
-  <div class="model disabled">
-    Claude
-  </div>
+  </main>
 
-  <div class="model disabled">
-    Gemini
-  </div>
+</div>
 
-</aside>
+<script>
 let currentModel = "deepseek-chat";
 
 document.querySelectorAll(".model").forEach(item => {
-  if (item.classList.contains("disabled")) return;
+  if(item.classList.contains("disabled")) return;
 
   item.addEventListener("click", () => {
     document.querySelectorAll(".model").forEach(m => m.classList.remove("active"));
@@ -317,21 +216,29 @@ document.querySelectorAll(".model").forEach(item => {
   });
 });
 
+document.querySelectorAll(".tool").forEach(item => {
+  item.addEventListener("click", () => {
+    document.querySelectorAll(".tool").forEach(t => t.classList.remove("active"));
+    item.classList.add("active");
+  });
+});
+
 const input = document.getElementById("question");
+const chatHistory = document.getElementById("chatHistory");
+const inputArea = document.querySelector(".input-area");
 
 input.addEventListener("keydown", function(e){
   if(e.key === "Enter" && !e.shiftKey){
     e.preventDefault();
-    window.fakeAI();
+    sendMessage();
   }
 });
 
-window.fakeAI = async function () {
+async function sendMessage(){
   const q = input.value.trim();
-  const chatHistory = document.getElementById("chatHistory");
-  document.querySelector(".input-area").classList.add("active");
-
   if(!q) return;
+
+  inputArea.classList.add("active");
 
   chatHistory.innerHTML += `<div class="user-msg">${q}</div>`;
   input.value = "";
@@ -342,26 +249,26 @@ window.fakeAI = async function () {
   chatHistory.appendChild(loading);
   chatHistory.scrollTop = chatHistory.scrollHeight;
 
-  try {
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+  try{
+    const res = await fetch("/api/chat",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
       },
-      body: JSON.stringify({
-        question: q,
-        model: currentModel
+      body:JSON.stringify({
+        question:q,
+        model:currentModel
       })
     });
 
     const data = await res.json();
-    loading.innerHTML = data.reply;
+    loading.innerHTML = data.reply || "没有返回内容";
     chatHistory.scrollTop = chatHistory.scrollHeight;
 
-  } catch (err) {
+  }catch(err){
     loading.innerHTML = "连接失败：" + err.message;
   }
-};
+}
 </script>
 
 </body>
