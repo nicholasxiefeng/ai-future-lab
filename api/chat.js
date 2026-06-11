@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type":"application/json; charset=utf-8"
-        "Authorization": "Bearer 你的sk-a5dcf2999bed40ad88424096da7c10f4"
+        "Authorization": "Bearer sk-a5dcf2999bed40ad88424096da7c10f4"
       },
       body: JSON.stringify({
         model: "deepseek-chat",
