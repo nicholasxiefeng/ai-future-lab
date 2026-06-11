@@ -254,11 +254,16 @@ button:hover{
     <textarea
       id="question"
       placeholder="输入你的问题..."
-    ></textarea>
+    </textarea>
 
-    <button type="button" onclick="window.fakeAI()">
-      进入未来
-    </button>
+<select id="model">
+  <option value="deepseek-chat">DeepSeek Chat</option>
+  <option value="deepseek-reasoner">DeepSeek R1 推理</option>
+</select>
+
+<button type="button" onclick="window.fakeAI()">
+  进入未来
+</button>
 
     <div id="result">
       AI 正在等待你的指令...
@@ -271,6 +276,7 @@ button:hover{
 <script>
 window.fakeAI = async function () {
   const q = document.getElementById("question").value;
+      const model = document.getElementById("model").value;
   const result = document.getElementById("result");
 
   result.innerHTML = "AI思考中...";
@@ -282,8 +288,9 @@ window.fakeAI = async function () {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        question: q
-      })
+  question: q,
+  model: model
+})
     });
 
     const data = await res.json();
