@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     const response = await fetch("https://api.deepseek.com/chat/completions", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type":"application/json; charset=utf-8"
         "Authorization": "Bearer 你的sk-a5dcf2999bed40ad88424096da7c10f4"
       },
       body: JSON.stringify({
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "user",
-            content: question
+            content: String(question)
           }
         ]
       })
