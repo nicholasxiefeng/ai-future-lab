@@ -174,7 +174,49 @@ textarea{
   outline:none;
 
 }
+.model-select{
+  width:100%;
+  margin-top:15px;
+  padding:14px 18px;
+  border:none;
+  border-radius:16px;
+  background:#0f172a;
+  color:#67e8f9;
+  font-size:16px;
+  outline:none;
+  box-shadow:0 0 20px rgba(0,255,255,0.15);
+}
 
+.chat-history{
+  margin-top:25px;
+  min-height:160px;
+  max-height:360px;
+  overflow-y:auto;
+  background:#0f172a;
+  border-radius:20px;
+  padding:20px;
+  color:white;
+  line-height:1.8;
+}
+
+.user-msg{
+  color:#67e8f9;
+  margin-bottom:15px;
+}
+
+.ai-msg{
+  color:#cbd5e1;
+  margin-bottom:20px;
+}
+
+button{
+
+  margin-top:20px;
+
+  width:100%;
+
+  ...
+}
 button{
 
   margin-top:20px;
@@ -256,7 +298,7 @@ button:hover{
       placeholder="输入你的问题..."
     ></textarea>
 
-<select id="model">
+<select id="model" class="model-select">
   <option value="deepseek-chat">DeepSeek Chat</option>
   <option value="deepseek-reasoner">DeepSeek R1 推理</option>
 </select>
@@ -265,9 +307,9 @@ button:hover{
   进入未来
 </button>
 
-    <div id="result">
-      AI 正在等待你的指令...
-    </div>
+    <div id="chatHistory" class="chat-history">
+  <div class="ai-msg">AI 正在等待你的指令...</div>
+</div>
 
   </div>
 
@@ -277,10 +319,12 @@ button:hover{
 window.fakeAI = async function () {
   const q = document.getElementById("question").value;
       const model = document.getElementById("model").value;
-  const result = document.getElementById("result");
+  const chatHistory = document.getElementById("chatHistory");
 
-  result.innerHTML = "AI思考中...";
-
+chatHistory.innerHTML += `
+<div class="user-msg">👤 ${q}</div>
+<div class="ai-msg">🤖 AI思考中...</div>
+`;
   try {
     const res = await fetch("/api/chat", {
       method: "POST",
@@ -294,10 +338,14 @@ window.fakeAI = async function () {
     });
 
     const data = await res.json();
-    result.innerHTML = data.reply;
+    chatHistory.innerHTML += `
+<div class="ai-msg">🤖 ${data.reply}</div>
+`;
 
   } catch (err) {
-    result.innerHTML = "AI连接失败：" + err.message;
+    chatHistory.innerHTML += `
+<div class="ai-msg">❌ ${err.message}</div>
+`;
   }
 };
 </script>
